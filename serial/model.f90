@@ -6,6 +6,8 @@ program atmosphere_model
   use module_output, only : create_output, write_record, close_output
   use dimensions , only : nx, nz, sim_time, output_freq, read_params ! add read_params to read the parameter/(Mu)
   use iodir, only : stdout
+  use module_types, only : t3, t4, t5, t6, rate
+  use omp_lib
   implicit none
 
   real(wp) :: etime
@@ -14,7 +16,8 @@ program atmosphere_model
   real(wp) :: pctime
   real(wp) :: mass0, te0
   real(wp) :: mass1, te1
-  integer(8) :: t1, t2, rate
+  integer(8) :: t1, t2
+  integer :: nthreads
 !===============================================================
 !==========================call the listname====================
 !===============================================================
@@ -46,7 +49,6 @@ program atmosphere_model
       output_counter = output_counter - output_freq
       call write_record(oldstat,ref,etime)
     end if
-
   end do
 
   call total_mass_energy(mass1,te1)
@@ -62,5 +64,32 @@ program atmosphere_model
 
   write(stdout,*) "SIMPLE ATMOSPHERIC MODEL RUN COMPLETED."
   write(stdout,*) "USED CPU TIME: ", dble(t2-t1)/dble(rate)
+
+
+  write(stdout,*) "USED CPU TIME no rate: ", (t2-t1)
+
+
+  !$omp parallel
+  if (omp_get_thread_num() == 0) then
+    write(stdout,*) "OpenMP threads: ", omp_get_num_threads()
+  end if
+  !$omp end parallel
+
+
+  write(stdout,*) "xtend for variables"
+  write(stdout,*) "TIME: ", t3
+
+
+  write(stdout,*) "ztend for flux"
+  write(stdout,*) "TIME: ", t4
+
+
+  write(stdout,*) "ztend for variables"
+  write(stdout,*) "TIME: ", t5
+
+
+  write(stdout,*) "xtend for flux"
+  write(stdout,*) "TIME: ", t6
+
 
 end program atmosphere_model
