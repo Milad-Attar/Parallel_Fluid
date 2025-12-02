@@ -4,7 +4,7 @@ program atmosphere_model
   use module_physics, only : init, finalize
   use module_physics, only : rungekutta, total_mass_energy
   use module_output, only : create_output, write_record, close_output
-  use dimensions , only : sim_time, output_freq
+  use dimensions , only : nx, nz, sim_time, output_freq, read_params ! add read_params to read the parameter/(Mu)
   use iodir, only : stdout
   implicit none
 
@@ -15,7 +15,10 @@ program atmosphere_model
   real(wp) :: mass0, te0
   real(wp) :: mass1, te1
   integer(8) :: t1, t2, rate
-
+!===============================================================
+!==========================call the listname====================
+!===============================================================
+      call read_params()!(Mu)
   write(stdout, *) 'SIMPLE ATMOSPHERIC MODEL STARTING.'
   call init(etime,output_counter,dt)
   call total_mass_energy(mass0,te0)
