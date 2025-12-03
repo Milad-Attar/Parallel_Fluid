@@ -12,7 +12,8 @@
 
 
 module purge 
-module load netcdf-fortran/4.6.1--gcc--12.2.0-spack0.22
+#module load netcdf-fortran/4.6.1--gcc--12.2.0-spack0.22
+netcdf-c/4.9.2--openmpi--4.1.6--gcc--12.2.0-spack0.22
 module load gcc/12.2.0 
 
 export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
