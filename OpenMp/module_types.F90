@@ -116,6 +116,8 @@ module module_types
     class(atmospheric_tendency), intent(in) :: tend
     real(wp), intent(in) :: dt
     integer :: ll, k, i
+    integer :: tstart, tstop
+    real(wp) :: rate
     !!! each (i,k,ll) is independant, because each iteration doesn't use or modify another iteration
     call system_clock(tstart)
     !$omp parallel do collapse(3)

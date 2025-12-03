@@ -10,7 +10,7 @@ module module_physics
   use module_types
 
   implicit none
-
+  real(wp), public :: t8, t9
   private
 
   public :: init
@@ -33,7 +33,8 @@ module module_physics
     implicit none
     real(wp), intent(out) :: etime, output_counter, dt
     integer :: i, k, ii, kk
-    real(wp) :: x, z, r, u, w, t, hr, ht
+    real(wp) :: x, z, r, u, w, t, hr, ht, rate
+    integer :: tstart, tstop
 
     dx = xlen / nx
     dz = zlen / nz
@@ -58,7 +59,8 @@ module module_physics
 
     call oldstat%set_state(0.0_wp)
 
-    !$omp parallel do collapse(2)
+    call system_clock(tstart)
+    !$omp parallel do collapse(4)
     !!! the two following loops identifies a cell in the grid, so we can collapse them, because every cell(i,k) is independant of others
     do k = 1-hs, nz+hs
       do i = 1-hs, nx+hs
@@ -79,6 +81,8 @@ module module_physics
         end do
       end do
     end do
+    call system_clock(tstop,rate)
+    t8 = t8 + real(tstop - tstart, wp)/rate
     newstat = oldstat
     ref%density(:) = 0.0_wp
     ref%denstheta(:) = 0.0_wp
@@ -204,9 +208,12 @@ module module_physics
     implicit none
     real(wp), intent(out) :: mass, te
     integer :: i, k
-    real(wp) :: r, u, w, th, p, t, ke, ie
+    real(wp) :: r, u, w, th, p, t, ke, ie, rate
+    integer :: tstart, tstop
     mass = 0.0_wp
     te = 0.0_wp
+    call system_clock(tstart)
+    !$omp parallel do collapse(2) reduction(+:mass,te) private(r, u, w, th, p, t, ke, ie)
     do k = 1, nz
       do i = 1, nx
         r = oldstat%dens(i,k) + ref%density(k)
@@ -221,6 +228,8 @@ module module_physics
         te = te + (ke + r*cv*t)*dx*dz
       end do
     end do
+    call system_clock(tstop,rate)
+    t9 = t9 + real(tstop - tstart, wp)/rate
   end subroutine total_mass_energy
 
 end module module_physics

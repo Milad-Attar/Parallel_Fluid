@@ -6,7 +6,8 @@ program atmosphere_model
   use module_output, only : create_output, write_record, close_output
   use dimensions , only : sim_time, output_freq
   use iodir, only : stdout
-  use module_types, only : t3, t4, t5, t6, rate
+  use module_types, only : t3, t4, t5, t6, t7, rate
+  use module_physics, only : t8, t9
 #ifdef _OPENMP
   use omp_lib
 #endif
