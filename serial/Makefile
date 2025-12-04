@@ -1,7 +1,7 @@
 FC = gfortran
 #FCFLAGS = -O0 -Wall -pedantic -fcheck=all -fbacktrace -I. `nf-config --fflags`
 FCFLAGS = -Ofast -I. `nf-config --fflags` -fPIC
-LDFLAGS = -L`nc-config --libdir` `nf-config --flibs`  -L /leonardo/prod/spack/06/install/0.22/linux-rhel8-icelake/gcc-12.2.0/netcdf-fortran-4.6.1-resb6kl33jm3j5jlfi4ssuqxom53xwra/bin/nf-config
+LDFLAGS = -L`nc-config --libdir` `nf-config --flibs`  #-L /leonardo/prod/spack/06/install/0.22/linux-rhel8-icelake/gcc-12.2.0/netcdf-fortran-4.6.1-resb6kl33jm3j5jlfi4ssuqxom53xwra/bin/nf-config
 
 
 all: model

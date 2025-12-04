@@ -87,7 +87,13 @@ program atmosphere_model
   write(stdout,*) "xtend for flux"
   write(stdout,*) "TIME: ", t6
 
-  write(stdout,*) "update loop"
+  write(stdout,*) "update"
   write(stdout,*) "TIME: ", t7
+
+  write(stdout,*) "init"
+  write(stdout,*) "TIME: ", t8
+
+  write(stdout,*) "total_mass_energy"
+  write(stdout,*) "TIME: ", t9
 
 end program atmosphere_model
